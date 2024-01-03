@@ -3,10 +3,46 @@ from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from skpy.chat import SkypeChats
+from skpy import Skype
+import gspread
 import requests
 import time
 import gspread
 
+
+
+ #登入帳號
+sk = Skype(user='kevin.wang@collaborate.tw', pwd='Dizzy9951')
+
+#建立SK物件
+skc = SkypeChats(sk)
+
+#指定發送群組
+cht_name = '批次訊息'
+
+#群組ID
+room_id = None
+
+#獲取前10個群組資料
+chats = skc.recent()
+
+while room_id is None and len(chats) > 0:
+    #使用遍歷將資料取出
+    for x in chats.values():
+        #取得群組名稱和id
+        group_name = getattr(x, 'topic', 'no attr')
+        group_id = getattr(x, 'id', 'no id')
+        
+        #當名稱相同時執行
+        if group_name in cht_name:
+            #將group_id給到room_id後結束迴圈
+            room_id = group_id
+            break
+    chats = skc.recent()
+    
+ch = sk.chats[room_id]
+message = ''
 
 scopes = ['https://spreadsheets.google.com/feeds'] #定義存取的範圍 feeds = google sheet
 
@@ -83,6 +119,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
             
         elif 'smart.12vin' in x: #thor 新手機
@@ -100,6 +137,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
             
         elif 'mobile.cmdbet' in x: #prod 新手機
@@ -117,6 +155,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
                
         elif 'mobile.12vin' in x: #thor 舊手機
@@ -132,6 +171,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
             
         elif 'smart.368aa' in x: #sta 舊手機
@@ -147,6 +187,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
             
         elif 'smart.cmdbet' in x: #prod 舊手機
@@ -162,6 +203,7 @@ for x in url:
                 continue
             except:
                 print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                 continue
             
         else:    #web
@@ -191,18 +233,20 @@ for x in url:
                     balance = chrome.find_element_by_id('lb_balance').text.replace(',','') #取得Balance金額
                     outstanding = chrome.find_element_by_id('lb_outstanding').text.replace(',','') #取得Outstanding金額
                     betcredit = chrome.find_element_by_id('lb_bet_credit').text.replace(',','') #取得Bet Crtedit金額
-                    print('%s 正常取得用戶金額' %x)
+                    print('正常取得用戶金額 %s' %x)
                 except:
-                    print('%s 無法取得用戶金額' %x)
+                    message += '無法取得用戶金額 %s' % x
             except:
                 if chrome.title == "System Maintenance":
-                    print('%s is System Maintenance.' % x)
+                    message += '%s is System Maintenance.' % x
                 else:
-                    print('發生其他異常，前往下列網址確認服務是否正常 %s' % x)
+                    message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
 
     elif statuscode.status_code == 403:
         print('請確認VPN是否連線')
     else:
-        print('發生異常，前往下列網址確認服務是否正常 %s' % url)
-    
+        message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+           
 chrome.close()
+if len(message) > 0:
+    sendMessage = ch.sendMsg('站台連線檢查結果如下\n%s' % message)
