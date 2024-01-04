@@ -132,25 +132,25 @@ for num in range(1,3):
                     print('%s 有異常請確認' % x)
                     message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                     continue
-                
-            elif 'mobile.cmdbet' in x: #prod 新手機
-                try:
-                    chrome.find_element_by_name('name').send_keys(testaccount)
-                    chrome.find_element_by_name('pwd').send_keys(pswd)    
-                    chrome.find_element_by_id('btn-login').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="link-sport"]/div[1]/img').click()
-                    time.sleep(1)
-                    chrome.find_element_by_xpath('//*[@id="toolbar-sport"]/div/a[4]/i').click()
-                    time.sleep(1)
-                    chrome.find_element_by_xpath('/html/body/div[7]/div[1]/div/ul/li[3]/a/div[2]/div[1]').click()
-                    print('%s 可以正常切換Market Type(新手機)' % x)
-                    continue
-                except:
-                    print('%s 有異常請確認' % x)
-                    message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-                    continue
-                
+               
+            #elif 'mobile.cmdbet' in x: #prod 新手機
+            #    try:
+            #        chrome.find_element_by_name('name').send_keys(testaccount)
+            #        chrome.find_element_by_name('pwd').send_keys(pswd)    
+            #        chrome.find_element_by_id('btn-login').click()
+            #        time.sleep(3)
+            #        chrome.find_element_by_xpath('//*[@id="link-sport"]/div[1]/img').click()
+            #        time.sleep(1)
+            #        chrome.find_element_by_xpath('//*[@id="toolbar-sport"]/div/a[4]/i').click()
+            #        time.sleep(1)
+            #        chrome.find_element_by_xpath('/html/body/div[7]/div[1]/div/ul/li[3]/a/div[2]/div[1]').click()
+            #        print('%s 可以正常切換Market Type(新手機)' % x)
+            #        continue
+            #    except:
+            #        print('%s 有異常請確認' % x)
+            #        message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+            #        continue
+                 
             elif 'mobile.12vin' in x: #thor 舊手機
                 try:
                     chrome.find_element_by_name('username').send_keys(testaccount)
@@ -183,21 +183,21 @@ for num in range(1,3):
                     message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
                     continue
                 
-            elif 'smart.cmdbet' in x: #prod 舊手機
-                try:
-                    chrome.find_element_by_name('username').send_keys(testaccount)
-                    chrome.find_element_by_name('password').send_keys(pswd)   
-                    chrome.find_element_by_id('btnLogin').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="betTypeList"]/li[7]/a').click()
-                    print('%s 可以正常切換Market Type(舊手機)' % x)
-                    continue
-                except:
-                    print('%s 有異常請確認' % x)
-                    message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-                    continue
+            #elif 'smart.cmdbet' in x: #prod 舊手機
+            #    try:
+            #        chrome.find_element_by_name('username').send_keys(testaccount)
+            #        chrome.find_element_by_name('password').send_keys(pswd)   
+            #        chrome.find_element_by_id('btnLogin').click()
+            #        time.sleep(3)
+            #        chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
+            #        time.sleep(3)
+            #        chrome.find_element_by_xpath('//*[@id="betTypeList"]/li[7]/a').click()
+            #        print('%s 可以正常切換Market Type(舊手機)' % x)
+            #        continue
+            #    except:
+            #        print('%s 有異常請確認' % x)
+            #        message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+            #        continue
                 
             else:    #web
 
