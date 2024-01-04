@@ -81,6 +81,7 @@ for num in range(1,3):
                 break
             
     options = Options() #設定Options
+    options.add_argument('--no-sandbox')
     options.add_argument(
         'user-agent= Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36') #指定user-agent
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
