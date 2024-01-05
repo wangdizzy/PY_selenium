@@ -242,7 +242,7 @@ for num in range(1,3):
         else:
             message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
 
-    chrome.close()
+    chrome.quit()
     url = []
     if len(message) > 0:
         sendMessage = ch.sendMsg('%s 站台連線檢查結果如下\n%s' % (env, message))
