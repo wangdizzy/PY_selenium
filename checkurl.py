@@ -159,9 +159,7 @@ for num in range(1,3):
                     chrome.find_element_by_id('btnLogin').click()
                     time.sleep(3)
                     chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="betTypeList"]/li[7]/a').click()
-                    print('%s 可以正常切換Market Type(舊手機)' % x)
+                    print('%s 可以正常登入(舊手機)' % x)
                     continue
                 except:
                     print('%s 有異常請確認' % x)
@@ -175,9 +173,7 @@ for num in range(1,3):
                     chrome.find_element_by_id('btnLogin').click()
                     time.sleep(3)
                     chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="betTypeList"]/li[7]/a').click()
-                    print('%s 可以正常切換Market Type(舊手機)' % x)
+                    print('%s 可以正常登入(舊手機)' % x)
                     continue
                 except:
                     print('%s 有異常請確認' % x)
