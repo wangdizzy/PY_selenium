@@ -67,94 +67,93 @@ for x in urlrange:
     else:
         break
             
-    options = Options() #設定Options
-    options.add_argument('--no-sandbox')
-    options.add_argument(
-        'user-agent= Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36') #指定user-agent
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    options.add_argument('--start-maximized') #視窗最大
-    chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+options = Options() #設定Options
+options.add_argument('--no-sandbox')
+options.add_argument(
+    'user-agent= Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36') #指定user-agent
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+options.add_argument('--start-maximized') #視窗最大
+chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
     #用request打URL 確認status code
-    for x in url:
-        try:
-            statuscode = requests.get(x)
-        except:
-            message +=  '請確認網址是否輸入正確 %s' % x
-            continue
-        if statuscode.status_code == 200:
-            chrome.get(x)
-            time.sleep(1)
-            if 'smart.12vin' in x: #thor 新手機
+for x in url:
+    try:
+        statuscode = requests.get(x)
+    except:
+        message +=  '請確認網址是否輸入正確 %s' % x
+        continue
+    if statuscode.status_code == 200:
+        chrome.get(x)
+        time.sleep(1)
+        if 'smart.12vin' in x: #thor 新手機
+            try:
+                chrome.find_element_by_name('name').send_keys(testaccount)
+                chrome.find_element_by_name('pwd').send_keys(pswd)    
+                chrome.find_element_by_id('btn-login').click()
+                time.sleep(3)
+                chrome.find_element_by_xpath('//*[@id="link-sport"]/div[1]/img').click()
+                time.sleep(1)
+                chrome.find_element_by_xpath('//*[@id="toolbar-sport"]/div/a[4]/i').click()
+                time.sleep(1)
+                chrome.find_element_by_xpath('/html/body/div[7]/div[1]/div/ul/li[3]/a/div[2]/div[1]').click()
+                print('%s 可以正常切換Market Type(新手機)' % x)
+                continue
+            except:
+                print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+                continue
+             
+        elif 'mobile.12vin' in x: #thor 舊手機
+            try:
+                chrome.find_element_by_name('username').send_keys(testaccount)
+                chrome.find_element_by_name('password').send_keys(pswd)   
+                chrome.find_element_by_id('btnLogin').click()
+                time.sleep(3)
+                chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
+                print('%s 可以正常登入(舊手機)' % x)
+                continue
+            except:
+                print('%s 有異常請確認' % x)
+                message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+                continue
+        else:    #web
+            try:
+                if 'MAXBET' in chrome.title:
+                    chrome.find_element_by_id('txtID').send_keys(testaccount)
+                    chrome.find_element_by_id('txtPW').send_keys(pswd)
+                    time.sleep(1)
+                    chrome.find_element_by_id('login').click()
+                else:
+                    chrome.find_element_by_id('UserName').send_keys(testaccount)
+                    chrome.find_element_by_id('Password').send_keys(pswd)
+                    time.sleep(1)
+                    chrome.find_element_by_id('sub').click()
+                time.sleep(1)
                 try:
-                    chrome.find_element_by_name('name').send_keys(testaccount)
-                    chrome.find_element_by_name('pwd').send_keys(pswd)    
-                    chrome.find_element_by_id('btn-login').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="link-sport"]/div[1]/img').click()
-                    time.sleep(1)
-                    chrome.find_element_by_xpath('//*[@id="toolbar-sport"]/div/a[4]/i').click()
-                    time.sleep(1)
-                    chrome.find_element_by_xpath('/html/body/div[7]/div[1]/div/ul/li[3]/a/div[2]/div[1]').click()
-                    print('%s 可以正常切換Market Type(新手機)' % x)
-                    continue
+                    chrome.find_element_by_xpath('//*[@id="divTradeInAd"]/div/div/div/p/button').click()
                 except:
-                    print('%s 有異常請確認' % x)
+                    pass    
+                chrome.switch_to.frame('leftFrame') #切換frame
+                chrome.find_element_by_id('btn_staus').click()
+                time.sleep(1)
+                try:
+                    balance = chrome.find_element_by_id('lb_balance').text.replace(',','') #取得Balance金額
+                    outstanding = chrome.find_element_by_id('lb_outstanding').text.replace(',','') #取得Outstanding金額
+                    betcredit = chrome.find_element_by_id('lb_bet_credit').text.replace(',','') #取得Bet Crtedit金額
+                    print('正常取得用戶金額 %s' %x)
+                except:
+                    message += '無法取得用戶金額 %s' % x
+            except:
+                if chrome.title == "System Maintenance":
+                    message += '%s is System Maintenance.' % x
+                else:
                     message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-                    continue
-                 
-            elif 'mobile.12vin' in x: #thor 舊手機
-                try:
-                    chrome.find_element_by_name('username').send_keys(testaccount)
-                    chrome.find_element_by_name('password').send_keys(pswd)   
-                    chrome.find_element_by_id('btnLogin').click()
-                    time.sleep(3)
-                    chrome.find_element_by_xpath('//*[@id="asportpanelmenu"]').click()
-                    print('%s 可以正常登入(舊手機)' % x)
-                    continue
-                except:
-                    print('%s 有異常請確認' % x)
-                    message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-                    continue
-            else:    #web
-                try:
-                    if 'MAXBET' in chrome.title:
-                        chrome.find_element_by_id('txtID').send_keys(testaccount)
-                        chrome.find_element_by_id('txtPW').send_keys(pswd)
-                        time.sleep(1)
-                        chrome.find_element_by_id('login').click()
-                    else:
-                        chrome.find_element_by_id('UserName').send_keys(testaccount)
-                        chrome.find_element_by_id('Password').send_keys(pswd)
-                        time.sleep(1)
-                        chrome.find_element_by_id('sub').click()
-                    time.sleep(1)
-                    try:
-                        chrome.find_element_by_xpath('//*[@id="divTradeInAd"]/div/div/div/p/button').click()
-                    except:
-                        pass    
-                    chrome.switch_to.frame('leftFrame') #切換frame
-                    chrome.find_element_by_id('btn_staus').click()
-                    time.sleep(1)
-                    try:
-                        balance = chrome.find_element_by_id('lb_balance').text.replace(',','') #取得Balance金額
-                        outstanding = chrome.find_element_by_id('lb_outstanding').text.replace(',','') #取得Outstanding金額
-                        betcredit = chrome.find_element_by_id('lb_bet_credit').text.replace(',','') #取得Bet Crtedit金額
-                        print('正常取得用戶金額 %s' %x)
-                    except:
-                        message += '無法取得用戶金額 %s' % x
-                except:
-                    if chrome.title == "System Maintenance":
-                        message += '%s is System Maintenance.' % x
-                    else:
-                        message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
+    elif statuscode.status_code == 403:
+        print('請確認VPN是否連線')
+    else:
+        message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
 
-        elif statuscode.status_code == 403:
-            print('請確認VPN是否連線')
-        else:
-            message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-
-    chrome.quit()
-    url = []
-    if len(message) > 0:
-        sendMessage = ch.sendMsg('Thor 站台連線檢查結果如下\n%s' %  message)
+chrome.quit()
+url = []
+if len(message) > 0:
+    sendMessage = ch.sendMsg('Thor 站台連線檢查結果如下\n%s' %  message)
