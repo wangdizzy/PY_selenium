@@ -158,3 +158,4 @@ chrome.quit()
 url = []
 if len(message) > 0:
     sendMessage = ch.sendMsg('Sta 站台連線檢查結果如下\n%s' %  message)
+ 
