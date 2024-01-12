@@ -56,6 +56,14 @@ sheet = client.open_by_key('1qWdc0QTGY13LEsr_N_5SA4cfyWTHaGXk8GhJFosoNzc').sheet
 
 url = list()
 urlrange = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD']
+options = Options() #設定Options
+options.add_argument('--no-sandbox')
+options.add_argument(
+    'user-agent= Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36') #指定user-agent
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+options.add_argument('--start-maximized') #視窗最大
+chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+
 for num in range(1,3):
     if num == 1: #thor
         #讀取google sheet內容
@@ -78,16 +86,8 @@ for num in range(1,3):
             if thisurl is not None:
                 url.append(thisurl)
             else:
-                break
+                break 
             
-    options = Options() #設定Options
-    options.add_argument('--no-sandbox')
-    options.add_argument(
-        'user-agent= Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36') #指定user-agent
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    options.add_argument('--start-maximized') #視窗最大
-    chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-
     #用request打URL 確認status code
     for x in url:
         try:
@@ -200,9 +200,8 @@ for num in range(1,3):
             print('請確認VPN是否連線')
         else:
             message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-
-    chrome.quit()
     url = []
     if len(message) > 0:
         sendMessage = ch.sendMsg('%s 站台連線檢查結果如下\n%s' % (env, message))
     message = ''
+chrome.quit()
