@@ -30,7 +30,7 @@ sk = Skype(user=skUser, pwd=skPw)
 skc = SkypeChats(sk)
 
 #指定發送群組
-cht_name = '批次訊息'
+cht_name = sheet.acell('C7').value
 
 #群組ID
 room_id = None
