@@ -12,8 +12,19 @@ import gspread
 
 
 
- #登入帳號
-sk = Skype(user='kevin.wang@collaborate.tw', pwd='Dizzy9951')
+scopes = ['https://spreadsheets.google.com/feeds'] #定義存取的範圍 feeds = google sheet
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name('sheet.json', scopes) #指定檔案金鑰
+
+client = gspread.authorize(credentials) #傳入gspread模組
+
+sheet = client.open_by_key('1qWdc0QTGY13LEsr_N_5SA4cfyWTHaGXk8GhJFosoNzc').sheet1 #使用open_by_key方式傳入google sheet 金鑰
+
+#登入帳號
+skUser = sheet.acell('A7').value
+skPw = sheet.acell('B7').value
+
+sk = Skype(user=skUser, pwd=skPw)
 
 #建立SK物件
 skc = SkypeChats(sk)
@@ -43,15 +54,6 @@ while room_id is None and len(chats) > 0:
     
 ch = sk.chats[room_id]
 message = ''
-
-scopes = ['https://spreadsheets.google.com/feeds'] #定義存取的範圍 feeds = google sheet
-
-credentials = ServiceAccountCredentials.from_json_keyfile_name('sheet.json', scopes) #指定檔案金鑰
-
-client = gspread.authorize(credentials) #傳入gspread模組
-
-sheet = client.open_by_key('1qWdc0QTGY13LEsr_N_5SA4cfyWTHaGXk8GhJFosoNzc').sheet1 #使用open_by_key方式傳入google sheet 金鑰
-
 
 
 url = list()
