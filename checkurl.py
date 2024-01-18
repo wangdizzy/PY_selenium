@@ -64,29 +64,17 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 options.add_argument('--start-maximized') #視窗最大
 chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-for num in range(1,3):
-    if num == 1: #thor
-        #讀取google sheet內容
-        testaccount = sheet.acell('A2').value 
-        pswd = sheet.acell('B2').value
-        env = sheet.acell('C2').value #從google sheet取得欄位C2資料
-        for x in urlrange: 
-            thisurl = sheet.acell('%s2' %x).value 
-            if thisurl is not None:
-                url.append(thisurl) 
-            else:
-                break
-    else: #sta
-        #讀取google sheet內容
-        testaccount = sheet.acell('A3').value 
-        pswd = sheet.acell('B3').value
-        env = sheet.acell('C3').value #從google sheet取得欄位C3資料
-        for x in urlrange:
-            thisurl = sheet.acell('%s3' %x).value 
-            if thisurl is not None:
-                url.append(thisurl)
-            else:
-                break 
+for num in range(2,4):
+    #讀取google sheet內容
+    testaccount = sheet.acell('A%s' % num).value 
+    pswd = sheet.acell('B%s' % num).value
+    env = sheet.acell('C%s' % num).value #從google sheet取得欄位C2資料
+    for x in urlrange: 
+        thisurl = sheet.acell('%s%s' %(x, num)).value #取URL值
+        if thisurl is not None:
+            url.append(thisurl) 
+        else:
+            break
             
     #用request打URL 確認status code
     for x in url:
