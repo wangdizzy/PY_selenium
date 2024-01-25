@@ -46,18 +46,16 @@ while room_id is None and len(chats) > 0:
         group_id = getattr(x, 'id', 'no id')
         
         #當名稱相同時執行
-        if group_name in cht_name:
+        if group_name == cht_name:
             #將group_id給到room_id後結束迴圈
             room_id = group_id
-            break
-        else:
-            print('再SK內沒有找到%s' % group_name)
-            break
+            break        
     chats = skc.recent()
-    
-ch = sk.chats[room_id]
+try:    
+    ch = sk.chats[room_id]
+except:
+    print('在Skype內沒有找到 %s 群組' % cht_name)
 message = ''
-
 
 url = list()
 urlrange = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD']
