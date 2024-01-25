@@ -151,8 +151,7 @@ for num in range(2,4):
                 except:
                     print('%s 有異常請確認' % x)
                     message += '發生異常，前往下列網址確認服務是否正常 %s\n' % x
-                    continue
-                
+                    continue                
             else:    #web
                 try:
                     if 'max222' in x:
