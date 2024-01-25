@@ -50,6 +50,9 @@ while room_id is None and len(chats) > 0:
             #將group_id給到room_id後結束迴圈
             room_id = group_id
             break
+        else:
+            print('再SK內沒有找到%s' % group_name)
+            break
     chats = skc.recent()
     
 ch = sk.chats[room_id]
