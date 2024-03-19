@@ -12,6 +12,10 @@ import gspread
 
 
 
+'''
+檢查thor sta prod
+'''
+
  #登入帳號
 sk = Skype(user='kevin.wang@collaborate.tw', pwd='Dizzy9951')
 

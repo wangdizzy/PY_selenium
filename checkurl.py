@@ -11,6 +11,9 @@ import time
 import gspread
 
 
+'''
+檢查thor sta
+'''
 
 scopes = ['https://spreadsheets.google.com/feeds'] #定義存取的範圍 feeds = google sheet
 
