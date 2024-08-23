@@ -40,7 +40,7 @@ scopes = [
 #    "sheet.json", scopes
 # )
 
-# 值將將金鑰放在di使用
+# 值將將金鑰放在dict使用
 credentials = ServiceAccountCredentials.from_json_keyfile_dict(sheet_json, scopes)
 
 client = gspread.authorize(credentials)  # 傳入gspread模組
