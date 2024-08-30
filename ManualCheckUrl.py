@@ -11,6 +11,15 @@ import requests
 import gspread
 
 
+'''
+問題排解
+1. OSError: [WinError 193] %1 不是有效的 Win32 應用程式
+解法：
+去c:\Users\<user>\.wdm\drivers.json
+將THIRD_PARTY_NOTICES.chromedriver 改成 chromedriver.exe
+'''
+
+
 """
 檢查sta sta2
 """
@@ -116,7 +125,7 @@ options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument("--start-maximized")  # 視窗最大
 chrome = webdriver.Chrome(
     service=ChromeService(
-        ChromeDriverManager(driver_version="126.0.6478.183").install()
+        ChromeDriverManager().install()
     ),
     options=options,
 )
